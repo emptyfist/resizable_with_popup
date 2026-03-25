@@ -1,51 +1,54 @@
-"use client"
+"use client";
 
-import { useEffect, useState, type RefObject } from "react"
-import { X, Info, CheckCircle2, AlertCircle } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { useEffect, useState, type RefObject } from "react";
+import { X, Info, CheckCircle2, AlertCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface ModelessPopupProps {
-  anchorRef: RefObject<HTMLDivElement | null>
-  onClose: () => void
+  anchorRef: RefObject<HTMLDivElement | null>;
+  onClose: () => void;
 }
 
 interface Position {
-  left: number
-  top: number
+  left: number;
+  top: number;
 }
 
-export default function ModelessPopup({ anchorRef, onClose }: ModelessPopupProps) {
-  const [position, setPosition] = useState<Position>({ left: 0, top: 0 })
+export default function ModelessPopup({
+  anchorRef,
+  onClose,
+}: ModelessPopupProps) {
+  const [position, setPosition] = useState<Position>({ left: 0, top: 0 });
 
   const updatePosition = () => {
     if (anchorRef.current) {
-      const rect = anchorRef.current.getBoundingClientRect()
+      const rect = anchorRef.current.getBoundingClientRect();
       setPosition({
         left: rect.left + rect.width / 2,
         top: rect.top + rect.height / 2,
-      })
+      });
     }
-  }
+  };
 
   useEffect(() => {
-    updatePosition()
+    updatePosition();
 
     const observer = new ResizeObserver(() => {
-      updatePosition()
-    })
+      updatePosition();
+    });
 
     if (anchorRef.current) {
-      observer.observe(anchorRef.current)
+      observer.observe(anchorRef.current);
     }
 
-    window.addEventListener("resize", updatePosition)
+    window.addEventListener("resize", updatePosition);
 
     return () => {
-      observer.disconnect()
-      window.removeEventListener("resize", updatePosition)
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [anchorRef])
+      observer.disconnect();
+      window.removeEventListener("resize", updatePosition);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [anchorRef]);
 
   return (
     <div
@@ -54,9 +57,9 @@ export default function ModelessPopup({ anchorRef, onClose }: ModelessPopupProps
         left: position.left,
         top: position.top,
         transform: "translate(-50%, -50%)",
-        zIndex: 50,
+        zIndex: 10,
       }}
-      className="w-80 rounded-2xl border bg-card shadow-2xl overflow-hidden"
+      className="w-120 rounded-2xl border bg-card shadow-2xl overflow-hidden"
     >
       {/* Popup header */}
       <div className="flex items-center justify-between px-5 py-4 border-b bg-muted/30">
@@ -85,8 +88,16 @@ export default function ModelessPopup({ anchorRef, onClose }: ModelessPopupProps
 
         <div className="space-y-2">
           {[
-            { icon: CheckCircle2, label: "Mark all as complete", color: "text-emerald-600" },
-            { icon: AlertCircle, label: "Flag for review", color: "text-amber-600" },
+            {
+              icon: CheckCircle2,
+              label: "Mark all as complete",
+              color: "text-emerald-600",
+            },
+            {
+              icon: AlertCircle,
+              label: "Flag for review",
+              color: "text-amber-600",
+            },
             { icon: Info, label: "View details", color: "text-blue-600" },
           ].map(({ icon: Icon, label, color }) => (
             <button
@@ -106,5 +117,5 @@ export default function ModelessPopup({ anchorRef, onClose }: ModelessPopupProps
         </Button>
       </div>
     </div>
-  )
+  );
 }

@@ -10,7 +10,7 @@ const navItems = [
 
 export default function LeftSidebar() {
   return (
-    <aside className="w-56 shrink-0 border-r bg-sidebar flex flex-col overflow-y-auto">
+    <aside className="w-56 shrink-0 border-r bg-sidebar flex flex-col overflow-y-auto z-20">
       <div className="p-3 flex-1">
         <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground px-2 mb-2">
           Menu

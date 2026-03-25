@@ -71,7 +71,7 @@ export default function Home() {
               withHandle
               className={
                 rightPanelOpen
-                  ? ""
+                  ? "z-15"
                   : "opacity-0 pointer-events-none w-0! overflow-hidden"
               }
             />
@@ -80,6 +80,7 @@ export default function Home() {
             <ResizablePanel
               panelRef={rightPanelRef}
               defaultSize="0%"
+              className="relative z-20"
               minSize={0}
               collapsible
               collapsedSize={0}
