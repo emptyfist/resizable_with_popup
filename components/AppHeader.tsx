@@ -1,6 +1,11 @@
+import type { ReactNode } from "react"
 import { LayoutDashboard } from "lucide-react"
 
-export default function AppHeader() {
+interface AppHeaderProps {
+  rightAction?: ReactNode
+}
+
+export default function AppHeader({ rightAction }: AppHeaderProps) {
   return (
     <header className="h-14 shrink-0 border-b bg-card flex items-center gap-3 px-5 z-10">
       <div className="flex items-center gap-2.5">
@@ -21,6 +26,9 @@ export default function AppHeader() {
           Workspace
         </span>
       </nav>
+      {rightAction ? (
+        <div className="ml-auto flex items-center shrink-0">{rightAction}</div>
+      ) : null}
     </header>
   )
 }

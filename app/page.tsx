@@ -1,55 +1,73 @@
-"use client"
+"use client";
 
-import { useRef, useState, useCallback, useEffect } from "react"
-import type { PanelImperativeHandle, PanelSize } from "react-resizable-panels"
-import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable"
-import { Button } from "@/components/ui/button"
-import { PanelRight } from "lucide-react"
-import AppHeader from "@/components/AppHeader"
-import LeftSidebar from "@/components/LeftSidebar"
-import LeftPanel from "@/components/LeftPanel"
-import RightPanel from "@/components/RightPanel"
-import ModelessPopup from "@/components/ModelessPopup"
+import { useRef, useState, useCallback, useEffect } from "react";
+import type { PanelImperativeHandle, PanelSize } from "react-resizable-panels";
+import {
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+} from "@/components/ui/resizable";
+import { Button } from "@/components/ui/button";
+import { PanelRight } from "lucide-react";
+import AppHeader from "@/components/AppHeader";
+import LeftSidebar from "@/components/LeftSidebar";
+import LeftPanel from "@/components/LeftPanel";
+import RightPanel from "@/components/RightPanel";
+import ModelessPopup from "@/components/ModelessPopup";
 
 export default function Home() {
-  const [rightPanelOpen, setRightPanelOpen] = useState(false)
-  const [popupOpen, setPopupOpen] = useState(false)
+  const [rightPanelOpen, setRightPanelOpen] = useState(false);
+  const [popupOpen, setPopupOpen] = useState(false);
 
   // Imperative ref for programmatic resize / collapse of the right panel
-  const rightPanelRef = useRef<PanelImperativeHandle | null>(null)
+  const rightPanelRef = useRef<PanelImperativeHandle | null>(null);
 
   // DOM ref to the left panel's root element — used to center the modeless popup
-  const leftPanelElementRef = useRef<HTMLDivElement | null>(null)
+  const leftPanelElementRef = useRef<HTMLDivElement | null>(null);
 
   // Force right panel to be collapsed on mount (in case defaultSize doesn't apply as 0%)
   useEffect(() => {
     const id = setTimeout(() => {
-      rightPanelRef.current?.collapse()
-    }, 0)
-    return () => clearTimeout(id)
-  }, [])
+      rightPanelRef.current?.collapse();
+    }, 0);
+    return () => clearTimeout(id);
+  }, []);
 
   const handleOpenRightPanel = useCallback(() => {
-    setRightPanelOpen(true)
+    setRightPanelOpen(true);
     // resize() accepts a number → treated as pixels in react-resizable-panels v4
-    rightPanelRef.current?.resize(350)
-  }, [])
+    rightPanelRef.current?.resize(350);
+  }, []);
 
   const handleCloseRightPanel = useCallback(() => {
-    rightPanelRef.current?.collapse()
-    setRightPanelOpen(false)
-  }, [])
+    rightPanelRef.current?.collapse();
+    setRightPanelOpen(false);
+  }, []);
 
   // Detect when the user drags the panel all the way to 0
-  const handleRightPanelResize = useCallback((panelSize: PanelSize) => {
-    if (rightPanelOpen && panelSize.inPixels < 1) {
-      setRightPanelOpen(false)
-    }
-  }, [rightPanelOpen])
+  const handleRightPanelResize = useCallback(
+    (panelSize: PanelSize) => {
+      if (rightPanelOpen && panelSize.inPixels < 1) {
+        setRightPanelOpen(false);
+      }
+    },
+    [rightPanelOpen],
+  );
 
   return (
     <div className="flex flex-col h-screen overflow-hidden">
-      <AppHeader />
+      <AppHeader
+        rightAction={
+          <Button
+            onClick={handleOpenRightPanel}
+            className="gap-2 px-4 py-2 h-9 text-sm font-medium shadow-sm"
+            size="default"
+          >
+            <PanelRight className="size-4" />
+            Open Chatbot
+          </Button>
+        }
+      />
 
       <div className="flex flex-1 overflow-hidden">
         <LeftSidebar />
@@ -100,16 +118,6 @@ export default function Home() {
           onClose={() => setPopupOpen(false)}
         />
       )}
-
-      {/* Button 2 — fixed at the bottom-right of the viewport */}
-      <Button
-        onClick={handleOpenRightPanel}
-        className="fixed bottom-6 right-6 z-50 shadow-xl gap-2 px-4 py-2 h-10 text-sm font-medium"
-        size="default"
-      >
-        <PanelRight className="size-4" />
-        Open Panel
-      </Button>
     </div>
-  )
+  );
 }
